@@ -1,6 +1,6 @@
-import type { TaskPayload } from '@/types/task';
+import type { UpdateTaskDTO } from '@/types/task';
 
-export type TaskUpdateParams = {
+export interface TaskUpdateParams {
   id: string;
-  patch: Partial<TaskPayload>;
-};
+  patch: UpdateTaskDTO;
+}

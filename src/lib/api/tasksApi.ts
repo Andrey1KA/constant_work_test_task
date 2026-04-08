@@ -8,10 +8,11 @@ import type {
 } from '@/types/llm';
 import type { ApiErrorMessageBody } from '@/types/axiosErrorBody';
 import type {
+  CreateTaskDTO,
   Task,
   TaskFilters,
   TaskListResponse,
-  TaskPayload,
+  UpdateTaskDTO,
 } from '@/types/task';
 
 const client = axios.create({
@@ -45,14 +46,14 @@ export async function getTask(id: string): Promise<Task> {
   return data;
 }
 
-export async function createTask(payload: TaskPayload): Promise<Task> {
+export async function createTask(payload: CreateTaskDTO): Promise<Task> {
   const { data } = await client.post<Task>(`/tasks`, payload);
   return data;
 }
 
 export async function updateTask(
   id: string,
-  patch: Partial<TaskPayload>
+  patch: UpdateTaskDTO
 ): Promise<Task> {
   const { data } = await client.put<Task>(`/tasks/${id}`, patch);
   return data;

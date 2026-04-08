@@ -5,10 +5,21 @@ import {
   PRIORITY_OPTIONS,
   STATUS_OPTIONS,
 } from '@/lib/taskBoard/constants';
-import type { TaskFormModalProps } from '@/views/TaskBoardPage/types/taskFormModal.types';
-import type { TaskFormValues } from '@/lib/taskBoard/taskFormTypes';
+import type { TaskFormValues } from '@/types/taskForm';
+import type { Task } from '@/types/task';
+import type { Awaitable, Nullable } from '@/types/utility';
+import type { FormInstance } from 'antd/es/form';
 
 const { TextArea } = Input;
+
+export interface TaskFormModalProps {
+  open: boolean;
+  editing: Nullable<Task>;
+  form: FormInstance<TaskFormValues>;
+  onCancel: () => void;
+  onFinish: (values: TaskFormValues) => Awaitable<void>;
+  isSubmitting: boolean;
+}
 
 export function TaskFormModal({
   open,

@@ -2,9 +2,22 @@
 
 import { Button, Modal, Select, Space, Spin, Typography } from 'antd';
 import { PRIORITY_OPTIONS } from '@/lib/taskBoard/constants';
-import type { PrioritySuggestModalProps } from '@/views/TaskBoardPage/types/prioritySuggestModal.types';
+import type { Priority, Task } from '@/types/task';
+import type { Nullable } from '@/types/utility';
 
 const { Paragraph } = Typography;
+
+export interface PrioritySuggestModalProps {
+  open: boolean;
+  loading: boolean;
+  task: Nullable<Task>;
+  value: Priority;
+  reason: string;
+  onValueChange: (value: Priority) => void;
+  onCancel: () => void;
+  onApply: () => void;
+  onReject: () => void;
+}
 
 export function PrioritySuggestModal({
   open,

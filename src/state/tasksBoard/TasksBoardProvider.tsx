@@ -16,8 +16,13 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import type { TableProps } from 'antd';
-import type { TablePaginationConfig } from 'antd/es/table/interface';
+import type {
+  FilterValue,
+  SorterResult,
+  TablePaginationConfig,
+} from 'antd/es/table/interface';
 import { message } from 'antd';
+import type { QueryClient, UseMutationResult } from '@tanstack/react-query';
 import {
   createTask,
   deleteTask,
@@ -26,27 +31,62 @@ import {
 } from '@/lib/api/tasksApi';
 import { taskKeys } from '@/lib/query/taskKeys';
 import { apiErr } from '@/lib/utils/apiErr';
-import type {
-  TaskListTableFiltersRecord,
-  TaskListTableSorter,
-} from '@/state/tasksBoard/types/tasksBoardTableHandler.types';
-import type {
-  PriorityFilterValue,
-  TaskSortByValue,
-  TaskSortOrderValue,
-  TaskStatusFilterValue,
-} from '@/state/tasksBoard/types/boardFilterState.types';
-import type { TasksBoardContextValue } from '@/state/tasksBoard/types/tasksBoardContext.types';
 import type { TaskTableColumnSortOrder } from '@/types/antdTable';
 import type { TaskBoardDateRange } from '@/types/dayjsRange';
 import type {
+  CreateTaskDTO,
+  Priority,
   Task,
   TaskFilters,
-  TaskPayload,
+  TaskListSortOrder,
   TaskSortField,
+  TaskStatus,
 } from '@/types/task';
 import type { TaskUpdateParams } from '@/types/taskMutation';
-import type { Nullable } from '@/types/utility';
+import type { Nullable, Optional } from '@/types/utility';
+
+export type TaskStatusFilterValue = Optional<TaskStatus>;
+export type PriorityFilterValue = Optional<Priority>;
+export type TaskSortByValue = Optional<TaskSortField>;
+export type TaskSortOrderValue = Optional<TaskListSortOrder>;
+
+export type TaskListTableSorterSingle = SorterResult<Task>;
+export type TaskListTableSorterArray = SorterResult<Task>[];
+export type TaskListTableSorter =
+  | TaskListTableSorterSingle
+  | TaskListTableSorterArray;
+
+export type TaskListTableFiltersRecord = Record<string, Nullable<FilterValue>>;
+
+export interface TasksBoardContextValue {
+  tasks: Task[];
+  total: number;
+  listFilters: TaskFilters;
+  isFetching: boolean;
+  isError: boolean;
+  queryError: unknown;
+  refetch: () => void;
+  filterStatus?: TaskStatus;
+  setFilterStatus: (value?: TaskStatus) => void;
+  filterPriority?: Priority;
+  setFilterPriority: (value?: Priority) => void;
+  appliedSearch: string;
+  setAppliedSearch: (value: string) => void;
+  dateRange: TaskBoardDateRange;
+  setDateRange: (value: TaskBoardDateRange) => void;
+  overdueOnly: boolean;
+  setOverdueOnly: (value: boolean) => void;
+  tablePage: number;
+  tablePageSize: number;
+  sortBy?: TaskSortField;
+  sortOrder?: TaskListSortOrder;
+  handleTableChange: TableProps<Task>['onChange'];
+  columnSortOrder: (field: TaskSortField) => TaskTableColumnSortOrder;
+  createTaskMut: UseMutationResult<Task, unknown, CreateTaskDTO>;
+  updateTaskMut: UseMutationResult<Task, unknown, TaskUpdateParams>;
+  deleteTaskMut: UseMutationResult<void, unknown, string>;
+  queryClient: QueryClient;
+}
 
 const EMPTY_TASKS: Task[] = [];
 
@@ -120,7 +160,7 @@ export function TasksBoardProvider({ children }: { children: ReactNode }) {
   }, [isError, queryError]);
 
   const createTaskMut = useMutation({
-    mutationFn: (payload: TaskPayload) => createTask(payload),
+    mutationFn: (payload: CreateTaskDTO) => createTask(payload),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: taskKeys.all });
     },

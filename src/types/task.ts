@@ -1,3 +1,4 @@
+import type { PaginationParams } from '@/types/api';
 import type { Nullable } from '@/types/utility';
 import type { Priority } from '@/types/priority';
 import type { TaskListSortOrder } from '@/types/taskListSortOrder';
@@ -21,7 +22,8 @@ export interface Task {
   updatedAt: string;
 }
 
-export interface TaskPayload {
+/** Тело запроса на создание задачи (POST /tasks). */
+export interface CreateTaskDTO {
   title: string;
   description?: Nullable<string>;
   priority: Priority;
@@ -30,22 +32,23 @@ export interface TaskPayload {
   category?: Nullable<string>;
 }
 
-export interface TaskFilters {
+/** Частичное обновление задачи (PUT /tasks/:id). */
+export type UpdateTaskDTO = Partial<CreateTaskDTO>;
+
+export interface TaskFilters extends PaginationParams {
   status?: TaskStatus;
   priority?: Priority;
   q?: string;
   dueFrom?: string;
   dueTo?: string;
   overdue?: boolean;
-  page?: number;
-  pageSize?: number;
   sortBy?: TaskSortField;
   sortOrder?: TaskListSortOrder;
 }
 
-export type TaskListResponse = {
+export interface TaskListResponse {
   data: Task[];
   total: number;
   page: number;
   pageSize: number;
-};
+}

@@ -13,8 +13,8 @@ import {
 } from '@/lib/api/tasksApi';
 import { apiErr } from '@/lib/utils/apiErr';
 import { useTasksBoard } from '@/state/tasksBoard';
-import type { CategorySuggestion } from '@/views/TaskBoardPage/types/categorySuggestModal.types';
-import type { TaskFormValues } from '@/lib/taskBoard/taskFormTypes';
+import type { CategorySuggestion } from '@/views/TaskBoardPage/CategorySuggestModal';
+import type { TaskFormValues } from '@/types/taskForm';
 import type { Priority, Task } from '@/types/task';
 import type { Nullable } from '@/types/utility';
 

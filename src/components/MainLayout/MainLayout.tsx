@@ -1,10 +1,14 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import { Layout } from 'antd';
 import Sider from 'antd/es/layout/Sider';
 import { Content } from 'antd/es/layout/layout';
 import { SideMenu } from '@/components/SideMenu/SideMenu';
-import type { MainLayoutProps } from '@/components/MainLayout/types/mainLayout.types';
+
+export interface MainLayoutProps {
+  children: ReactNode;
+}
 
 export function MainLayout({ children }: MainLayoutProps) {
   return (

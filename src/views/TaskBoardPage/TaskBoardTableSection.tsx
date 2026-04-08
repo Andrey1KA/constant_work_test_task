@@ -3,8 +3,10 @@
 import type { HTMLAttributes } from 'react';
 import { useMemo } from 'react';
 import { Table } from 'antd';
-import { buildTaskTableColumns } from '@/views/TaskBoardPage/buildTaskTableColumns';
-import type { TaskBoardTableSectionProps } from '@/views/TaskBoardPage/types/taskBoardTable.types';
+import {
+  buildTaskTableColumns,
+  type TaskBoardTableSectionProps,
+} from '@/views/TaskBoardPage/buildTaskTableColumns';
 import type { Task } from '@/types/task';
 
 const handlePaginationShowTotal = (t: number) => `Всего ${t}`;

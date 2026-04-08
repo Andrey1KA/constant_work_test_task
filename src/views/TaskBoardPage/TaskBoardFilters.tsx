@@ -1,13 +1,39 @@
 'use client';
 
-import { Button, Checkbox, DatePicker, Input, Select, Space } from 'antd';
+import {
+  Button,
+  Checkbox,
+  DatePicker,
+  Input,
+  Select,
+  Space,
+  type CheckboxChangeEvent,
+} from 'antd';
 import {
   PRIORITY_OPTIONS,
   STATUS_OPTIONS,
 } from '@/lib/taskBoard/constants';
-import type { TaskBoardFiltersProps } from '@/views/TaskBoardPage/types/taskBoardFilters.types';
+import type {
+  DayjsRangePickerChangeValue,
+  TaskBoardDateRange,
+} from '@/types/dayjsRange';
+import type { Priority, TaskStatus } from '@/types/task';
 
 const { RangePicker } = DatePicker;
+
+export interface TaskBoardFiltersProps {
+  filterStatus?: TaskStatus;
+  onFilterStatusChange: (value?: TaskStatus) => void;
+  filterPriority?: Priority;
+  onFilterPriorityChange: (value?: Priority) => void;
+  dateRange: TaskBoardDateRange;
+  onDateRangeChange: (dates: DayjsRangePickerChangeValue) => void;
+  overdueOnly: boolean;
+  onOverdueOnlyChange: (e: CheckboxChangeEvent) => void;
+  onSearch: (value: string) => void;
+  onRefreshClick: () => void;
+  isRefreshing: boolean;
+}
 
 export function TaskBoardFilters({
   filterStatus,

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import type { Task as DbTask } from '@prisma/client';
-import type { Task } from '@/types/task';
+import type { Task, TaskListResponse } from '@/types/task';
 import { ApiError } from '@/lib/ApiError';
 import {
   taskRepository,
@@ -91,15 +91,8 @@ function serializeTask(row: DbTask): Task {
   };
 }
 
-export type TaskListResult = {
-  data: Task[];
-  total: number;
-  page: number;
-  pageSize: number;
-};
-
 export const taskService = {
-  async list(rawQuery: Record<string, unknown>): Promise<TaskListResult> {
+  async list(rawQuery: Record<string, unknown>): Promise<TaskListResponse> {
     const q = parseListQuery(rawQuery);
     const { rows, total } = await taskRepository.list(q);
     return {

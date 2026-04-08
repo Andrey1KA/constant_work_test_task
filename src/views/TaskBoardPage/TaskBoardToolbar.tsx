@@ -2,9 +2,13 @@
 
 import { Button, Space, Typography } from 'antd';
 import { PlusOutlined, RobotOutlined } from '@ant-design/icons';
-import type { TaskBoardToolbarProps } from '@/views/TaskBoardPage/types/taskBoardToolbar.types';
 
 const { Title } = Typography;
+
+export interface TaskBoardToolbarProps {
+  onWorkloadClick: () => void;
+  onNewTaskClick: () => void;
+}
 
 export function TaskBoardToolbar({
   onWorkloadClick,

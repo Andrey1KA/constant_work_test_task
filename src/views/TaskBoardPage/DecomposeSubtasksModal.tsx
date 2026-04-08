@@ -1,9 +1,23 @@
 'use client';
 
+import type { ChangeEvent } from 'react';
 import { Button, Input, Modal, Space, Spin, Typography } from 'antd';
-import type { DecomposeSubtasksModalProps } from '@/views/TaskBoardPage/types/decomposeSubtasksModal.types';
+import type { Task } from '@/types/task';
+import type { Nullable } from '@/types/utility';
 
 const { Text } = Typography;
+
+export interface DecomposeSubtasksModalProps {
+  open: boolean;
+  loading: boolean;
+  task: Nullable<Task>;
+  items: string[];
+  getLineChangeHandler: (
+    index: number
+  ) => (e: ChangeEvent<HTMLInputElement>) => void;
+  onCancel: () => void;
+  onCreate: () => void;
+}
 
 export function DecomposeSubtasksModal({
   open,

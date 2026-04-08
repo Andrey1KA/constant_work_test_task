@@ -1,18 +1,44 @@
 import Link from 'next/link';
 import { Button, Dropdown, Popconfirm, Space, Tag, Typography } from 'antd';
+import type { MenuProps } from 'antd';
+import type { TableProps } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { DownOutlined, RobotOutlined } from '@ant-design/icons';
-import type { BuildTaskTableColumnsParams } from '@/views/TaskBoardPage/types/taskBoardTable.types';
 import {
   priorityColor,
   priorityLabel,
   statusLabel,
 } from '@/lib/taskBoard/labels';
-import type { Priority, Task, TaskStatus } from '@/types/task';
+import type { TaskTableColumnSortOrder } from '@/types/antdTable';
+import type { Priority, Task, TaskSortField, TaskStatus } from '@/types/task';
 import type { Nullable } from '@/types/utility';
 
 const { Text } = Typography;
+
+export interface BuildTaskTableColumnsParams {
+  columnSortOrder: (
+    field: TaskSortField
+  ) => TaskTableColumnSortOrder;
+  onEditRow: (task: Task) => void;
+  onDeleteRow: (id: string) => void;
+  getAiMenu: (task: Task) => MenuProps;
+}
+
+export interface TaskBoardTableSectionProps {
+  tasks: Task[];
+  total: number;
+  isFetching: boolean;
+  tablePage: number;
+  tablePageSize: number;
+  onTableChange: TableProps<Task>['onChange'];
+  columnSortOrder: (
+    field: TaskSortField
+  ) => TaskTableColumnSortOrder;
+  onEditRow: (task: Task) => void;
+  onDeleteRow: (id: string) => void;
+  getAiMenu: (task: Task) => MenuProps;
+}
 
 export function buildTaskTableColumns({
   columnSortOrder,

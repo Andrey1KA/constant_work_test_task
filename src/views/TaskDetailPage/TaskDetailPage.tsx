@@ -7,10 +7,13 @@ import dayjs from 'dayjs';
 import axios from 'axios';
 import { getTask } from '@/lib/api/tasksApi';
 import { taskKeys } from '@/lib/query/taskKeys';
-import type { TaskDetailPageProps } from '@/views/TaskDetailPage/types/taskDetailPage.types';
 import type { Priority, TaskStatus } from '@/types/task';
 
 const { Title, Text } = Typography;
+
+export interface TaskDetailPageProps {
+  id: string;
+}
 
 const STATUS_LABEL: Record<TaskStatus, string> = {
   PENDING: 'Ожидает',

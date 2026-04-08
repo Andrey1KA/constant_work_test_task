@@ -1,5 +1,5 @@
 import type { APIRequestContext, Page } from '@playwright/test';
-import type { TaskPayload } from '@/types/task';
+import type { CreateTaskDTO } from '@/types/task';
 
 export function isTasksListApiUrl(u: string): boolean {
   return u.includes('/api/v1/tasks') && !/\/api\/v1\/tasks\/[^/?]+/.test(u);
@@ -40,7 +40,7 @@ export async function apiClearTasks(request: APIRequestContext) {
 
 export async function apiCreateTask(
   request: APIRequestContext,
-  body: TaskPayload
+  body: CreateTaskDTO
 ) {
   const res = await request.post('/api/v1/tasks', {
     data: body,

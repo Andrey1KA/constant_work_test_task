@@ -1,9 +1,16 @@
 'use client';
 
 import { Button, Modal, Spin, Typography } from 'antd';
-import type { WorkloadSummaryModalProps } from '@/views/TaskBoardPage/types/workloadSummaryModal.types';
 
 const { Paragraph } = Typography;
+
+export interface WorkloadSummaryModalProps {
+  open: boolean;
+  loading: boolean;
+  text: string;
+  onCancel: () => void;
+  onClose: () => void;
+}
 
 export function WorkloadSummaryModal({
   open,

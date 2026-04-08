@@ -1,9 +1,25 @@
 'use client';
 
 import { Button, Modal, Space, Spin, Typography } from 'antd';
-import type { CategorySuggestModalProps } from '@/views/TaskBoardPage/types/categorySuggestModal.types';
+import type { Task } from '@/types/task';
+import type { Nullable } from '@/types/utility';
 
 const { Paragraph, Text } = Typography;
+
+export interface CategorySuggestion {
+  category: string;
+  reasoning?: string;
+}
+
+export interface CategorySuggestModalProps {
+  open: boolean;
+  loading: boolean;
+  task: Nullable<Task>;
+  suggestion: Nullable<CategorySuggestion>;
+  onCancel: () => void;
+  onAccept: () => void;
+  onReject: () => void;
+}
 
 export function CategorySuggestModal({
   open,

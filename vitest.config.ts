@@ -10,13 +10,13 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],
-      include: ['lib/**/*.ts', 'app/api/**/*.ts'],
+      include: ['src/lib/**/*.ts', 'src/app/api/**/*.ts'],
       exclude: ['**/*.test.ts', '**/types/**'],
     },
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './'),
+      '@': path.resolve(__dirname, './src'),
     },
   },
 });

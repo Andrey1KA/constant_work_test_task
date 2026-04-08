@@ -1,4 +1,5 @@
 import type { APIRequestContext, Page } from '@playwright/test';
+import type { TaskPayload } from '@/types/task';
 
 export function isTasksListApiUrl(u: string): boolean {
   return u.includes('/api/v1/tasks') && !/\/api\/v1\/tasks\/[^/?]+/.test(u);
@@ -39,14 +40,7 @@ export async function apiClearTasks(request: APIRequestContext) {
 
 export async function apiCreateTask(
   request: APIRequestContext,
-  body: {
-    title: string;
-    description?: string | null;
-    priority: 'LOW' | 'MEDIUM' | 'HIGH';
-    status: 'PENDING' | 'IN_PROGRESS' | 'DONE';
-    dueDate?: string | null;
-    category?: string | null;
-  }
+  body: TaskPayload
 ) {
   const res = await request.post('/api/v1/tasks', {
     data: body,

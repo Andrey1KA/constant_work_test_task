@@ -22,7 +22,6 @@ export interface Task {
   updatedAt: string;
 }
 
-/** Тело запроса на создание задачи (POST /tasks). */
 export interface CreateTaskDTO {
   title: string;
   description?: Nullable<string>;
@@ -32,7 +31,6 @@ export interface CreateTaskDTO {
   category?: Nullable<string>;
 }
 
-/** Частичное обновление задачи (PUT /tasks/:id). */
 export type UpdateTaskDTO = Partial<CreateTaskDTO>;
 
 export interface TaskFilters extends PaginationParams {

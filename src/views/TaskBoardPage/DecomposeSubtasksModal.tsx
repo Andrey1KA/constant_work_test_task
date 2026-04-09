@@ -2,8 +2,7 @@
 
 import type { ChangeEvent } from 'react';
 import { Button, Input, Modal, Space, Spin, Typography } from 'antd';
-import type { Task } from '@/types/task';
-import type { Nullable } from '@/types/utility';
+import type { Nullable, Task } from '@/types';
 
 const { Text } = Typography;
 
@@ -36,7 +35,7 @@ export function DecomposeSubtasksModal({
       onCancel={onCancel}
       footer={null}
       width={640}
-      destroyOnClose
+      destroyOnHidden
     >
       {loading ? (
         <Spin />

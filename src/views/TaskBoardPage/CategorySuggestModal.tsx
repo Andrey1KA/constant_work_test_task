@@ -1,8 +1,7 @@
 'use client';
 
 import { Button, Modal, Space, Spin, Typography } from 'antd';
-import type { Task } from '@/types/task';
-import type { Nullable } from '@/types/utility';
+import type { Nullable, Task } from '@/types';
 
 const { Paragraph, Text } = Typography;
 
@@ -37,7 +36,7 @@ export function CategorySuggestModal({
       open={open}
       onCancel={onCancel}
       footer={null}
-      destroyOnClose
+      destroyOnHidden
     >
       {loading ? (
         <Spin />

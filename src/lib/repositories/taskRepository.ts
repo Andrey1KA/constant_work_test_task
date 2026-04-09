@@ -1,11 +1,13 @@
 import type { Prisma, Task } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
-import type { Priority } from '@/types/priority';
-import type { TaskListSortOrder } from '@/types/taskListSortOrder';
-import type { TaskSortField } from '@/types/taskSortField';
-import type { TaskStatus } from '@/types/taskStatus';
+import type {
+  Priority,
+  TaskListSortOrder,
+  TaskSortField,
+  TaskStatus,
+} from '@/types';
 
-export type { TaskSortField } from '@/types/taskSortField';
+export type { TaskSortField } from '@/types';
 
 export type TaskListQuery = {
   status?: TaskStatus;

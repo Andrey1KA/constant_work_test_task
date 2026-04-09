@@ -1,7 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  /** Явный tsconfig для e2e (алиас `@/` → `src/`). */
   tsconfig: './e2e/tsconfig.json',
   testDir: './e2e',
   fullyParallel: false,

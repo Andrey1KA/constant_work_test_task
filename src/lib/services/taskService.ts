@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import type { Task as DbTask } from '@prisma/client';
-import type { Task, TaskListResponse } from '@/types/task';
+import type { Task, TaskListResponse } from '@/types';
 import { ApiError } from '@/lib/ApiError';
 import {
   taskRepository,

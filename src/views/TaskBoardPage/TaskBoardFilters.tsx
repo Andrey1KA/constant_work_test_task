@@ -12,12 +12,13 @@ import {
 import {
   PRIORITY_OPTIONS,
   STATUS_OPTIONS,
-} from '@/lib/taskBoard/constants';
+} from '@/lib/taskBoard';
 import type {
   DayjsRangePickerChangeValue,
   TaskBoardDateRange,
-} from '@/types/dayjsRange';
-import type { Priority, TaskStatus } from '@/types/task';
+  Priority,
+  TaskStatus,
+} from '@/types';
 
 const { RangePicker } = DatePicker;
 

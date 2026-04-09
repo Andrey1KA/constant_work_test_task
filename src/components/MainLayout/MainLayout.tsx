@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import { Layout } from 'antd';
 import Sider from 'antd/es/layout/Sider';
 import { Content } from 'antd/es/layout/layout';
-import { SideMenu } from '@/components/SideMenu/SideMenu';
+import { SideMenu } from '@/components/SideMenu';
 
 export interface MainLayoutProps {
   children: ReactNode;

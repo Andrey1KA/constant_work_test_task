@@ -1,5 +1,5 @@
-import type { Priority, TaskStatus } from '@/types/task';
-import { PRIORITY_OPTIONS, STATUS_OPTIONS } from '@/lib/taskBoard/constants';
+import type { Priority, TaskStatus } from '@/types';
+import { PRIORITY_OPTIONS, STATUS_OPTIONS } from './constants';
 
 export function statusLabel(s: TaskStatus) {
   return STATUS_OPTIONS.find((o) => o.value === s)?.label ?? s;

@@ -1,4 +1,4 @@
-import type { Nullable } from '@/types/utility';
+import type { Nullable } from '@/types';
 
 export type LlmUsageSlice = {
   prompt_tokens?: number;

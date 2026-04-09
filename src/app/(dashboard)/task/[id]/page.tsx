@@ -1,4 +1,4 @@
-import { TaskDetailPage } from '@/views/TaskDetailPage/TaskDetailPage';
+import { TaskDetailPage } from '@/views';
 
 export default function TaskByIdPage({
   params,

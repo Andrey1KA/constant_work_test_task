@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { ApiErrorResponseData } from '@/types/axiosErrorBody';
+import type { ApiErrorResponseData } from '@/types';
 
 export function apiErr(e: unknown) {
   if (axios.isAxiosError(e)) {

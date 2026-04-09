@@ -1,6 +1,6 @@
-import type { ErrorCode } from '@/types/errorCode';
+import type { ErrorCode } from '@/types';
 
-export type { ErrorCode } from '@/types/errorCode';
+export type { ErrorCode } from '@/types';
 
 export class ApiError extends Error {
   readonly status: number;

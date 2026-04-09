@@ -9,10 +9,15 @@ import {
   priorityColor,
   priorityLabel,
   statusLabel,
-} from '@/lib/taskBoard/labels';
-import type { TaskTableColumnSortOrder } from '@/types/antdTable';
-import type { Priority, Task, TaskSortField, TaskStatus } from '@/types/task';
-import type { Nullable } from '@/types/utility';
+} from '@/lib/taskBoard';
+import type {
+  Nullable,
+  Priority,
+  Task,
+  TaskSortField,
+  TaskStatus,
+  TaskTableColumnSortOrder,
+} from '@/types';
 
 const { Text } = Typography;
 

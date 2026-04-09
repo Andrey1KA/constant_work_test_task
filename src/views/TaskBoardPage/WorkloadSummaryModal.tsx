@@ -35,7 +35,7 @@ export function WorkloadSummaryModal({
         </Button>
       }
       width={720}
-      destroyOnClose
+      destroyOnHidden
     >
       {loading && !text ? (
         <Spin data-testid="e2e-summary-loading" />

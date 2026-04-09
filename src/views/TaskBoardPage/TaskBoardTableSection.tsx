@@ -6,8 +6,8 @@ import { Table } from 'antd';
 import {
   buildTaskTableColumns,
   type TaskBoardTableSectionProps,
-} from '@/views/TaskBoardPage/buildTaskTableColumns';
-import type { Task } from '@/types/task';
+} from './buildTaskTableColumns';
+import type { Task } from '@/types';
 
 const handlePaginationShowTotal = (t: number) => `Всего ${t}`;
 

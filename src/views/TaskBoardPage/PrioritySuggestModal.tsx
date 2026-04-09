@@ -1,9 +1,8 @@
 'use client';
 
 import { Button, Modal, Select, Space, Spin, Typography } from 'antd';
-import { PRIORITY_OPTIONS } from '@/lib/taskBoard/constants';
-import type { Priority, Task } from '@/types/task';
-import type { Nullable } from '@/types/utility';
+import { PRIORITY_OPTIONS } from '@/lib/taskBoard';
+import type { Nullable, Priority, Task } from '@/types';
 
 const { Paragraph } = Typography;
 
@@ -37,7 +36,7 @@ export function PrioritySuggestModal({
       open={open}
       onCancel={onCancel}
       footer={null}
-      destroyOnClose
+      destroyOnHidden
     >
       {loading ? (
         <Spin />

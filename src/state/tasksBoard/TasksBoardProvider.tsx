@@ -1,49 +1,30 @@
 'use client';
 
+import { createContext, useContext, useMemo, type ReactNode } from 'react';
 import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from 'react';
-import {
-  keepPreviousData,
-  useMutation,
-  useQuery,
   useQueryClient,
+  type QueryClient,
+  type UseMutationResult,
 } from '@tanstack/react-query';
 import type { TableProps } from 'antd';
-import type {
-  FilterValue,
-  SorterResult,
-  TablePaginationConfig,
-} from 'antd/es/table/interface';
-import { message } from 'antd';
-import type { QueryClient, UseMutationResult } from '@tanstack/react-query';
-import {
-  createTask,
-  deleteTask,
-  fetchTasks,
-  updateTask,
-} from '@/lib/api/tasksApi';
-import { taskKeys } from '@/lib/query/taskKeys';
-import { apiErr } from '@/lib/utils/apiErr';
-import type { TaskTableColumnSortOrder } from '@/types/antdTable';
-import type { TaskBoardDateRange } from '@/types/dayjsRange';
+import type { FilterValue, SorterResult } from 'antd/es/table/interface';
 import type {
   CreateTaskDTO,
+  Nullable,
+  Optional,
   Priority,
   Task,
+  TaskBoardDateRange,
+  TaskTableColumnSortOrder,
   TaskFilters,
   TaskListSortOrder,
   TaskSortField,
   TaskStatus,
-} from '@/types/task';
-import type { TaskUpdateParams } from '@/types/taskMutation';
-import type { Nullable, Optional } from '@/types/utility';
+  TaskUpdateParams,
+} from '@/types';
+import { useTasksBoardFilters } from '@/state/tasksBoard/useTasksBoardFilters';
+import { useTasksBoardListQuery } from '@/state/tasksBoard/useTasksBoardListQuery';
+import { useTasksBoardMutations } from '@/state/tasksBoard/useTasksBoardMutations';
 
 export type TaskStatusFilterValue = Optional<TaskStatus>;
 export type PriorityFilterValue = Optional<Priority>;
@@ -94,49 +75,25 @@ const TasksBoardContext = createContext<Nullable<TasksBoardContextValue>>(null);
 
 export function TasksBoardProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient();
-  const [filterStatus, setFilterStatus] = useState<TaskStatusFilterValue>();
-  const [filterPriority, setFilterPriority] = useState<PriorityFilterValue>();
-  const [appliedSearch, setAppliedSearch] = useState('');
-  const [dateRange, setDateRange] = useState<TaskBoardDateRange>(null);
-  const [overdueOnly, setOverdueOnly] = useState(false);
-  const [tablePage, setTablePage] = useState(1);
-  const [tablePageSize, setTablePageSize] = useState(20);
-  const [sortBy, setSortBy] = useState<TaskSortByValue>();
-  const [sortOrder, setSortOrder] = useState<TaskSortOrderValue>();
-
-  useEffect(() => {
-    setTablePage(1);
-  }, [filterStatus, filterPriority, appliedSearch, dateRange, overdueOnly]);
-
-  const listFilters: TaskFilters = useMemo(
-    () => ({
-      status: filterStatus,
-      priority: filterPriority,
-      q: appliedSearch.trim() || undefined,
-      dueFrom: dateRange
-        ? dateRange[0].startOf('day').toISOString()
-        : undefined,
-      dueTo: dateRange
-        ? dateRange[1].endOf('day').toISOString()
-        : undefined,
-      overdue: overdueOnly || undefined,
-      page: tablePage,
-      pageSize: tablePageSize,
-      sortBy,
-      sortOrder,
-    }),
-    [
-      filterStatus,
-      filterPriority,
-      appliedSearch,
-      dateRange,
-      overdueOnly,
-      tablePage,
-      tablePageSize,
-      sortBy,
-      sortOrder,
-    ]
-  );
+  const {
+    listFilters,
+    filterStatus,
+    setFilterStatus,
+    filterPriority,
+    setFilterPriority,
+    appliedSearch,
+    setAppliedSearch,
+    dateRange,
+    setDateRange,
+    overdueOnly,
+    setOverdueOnly,
+    tablePage,
+    tablePageSize,
+    sortBy,
+    sortOrder,
+    handleTableChange,
+    columnSortOrder,
+  } = useTasksBoardFilters();
 
   const {
     data: listPayload,
@@ -144,80 +101,13 @@ export function TasksBoardProvider({ children }: { children: ReactNode }) {
     isError,
     error: queryError,
     refetch,
-  } = useQuery({
-    queryKey: taskKeys.list(listFilters),
-    queryFn: () => fetchTasks(listFilters),
-    placeholderData: keepPreviousData,
-  });
+  } = useTasksBoardListQuery(listFilters);
 
   const tasks = listPayload?.data ?? EMPTY_TASKS;
   const total = listPayload?.total ?? 0;
 
-  useEffect(() => {
-    if (isError && queryError) {
-      message.error(apiErr(queryError));
-    }
-  }, [isError, queryError]);
-
-  const createTaskMut = useMutation({
-    mutationFn: (payload: CreateTaskDTO) => createTask(payload),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: taskKeys.all });
-    },
-  });
-
-  const updateTaskMut = useMutation({
-    mutationFn: ({ id, patch }: TaskUpdateParams) => updateTask(id, patch),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: taskKeys.all });
-    },
-  });
-
-  const deleteTaskMut = useMutation({
-    mutationFn: (id: string) => deleteTask(id),
-    onSuccess: () => {
-      message.success('Удалено');
-      void queryClient.invalidateQueries({ queryKey: taskKeys.all });
-    },
-    onError: (e) => message.error(apiErr(e)),
-  });
-
-  const columnSortOrder = useCallback(
-    (field: TaskSortField): TaskTableColumnSortOrder => {
-      if (sortBy !== field || !sortOrder) return undefined;
-      return sortOrder === 'desc' ? 'descend' : 'ascend';
-    },
-    [sortBy, sortOrder]
-  );
-
-  const handleTableChange: TableProps<Task>['onChange'] = useCallback(
-    (
-      pagination: TablePaginationConfig,
-      _filters: TaskListTableFiltersRecord,
-      sorter: TaskListTableSorter,
-      extra: Parameters<NonNullable<TableProps<Task>['onChange']>>[3]
-    ) => {
-      if (pagination?.current != null) setTablePage(pagination.current);
-      if (
-        pagination?.pageSize != null &&
-        pagination.pageSize !== tablePageSize
-      ) {
-        setTablePageSize(pagination.pageSize);
-        setTablePage(1);
-      }
-      if (extra.action === 'sort' && !Array.isArray(sorter)) {
-        if (sorter.order && sorter.columnKey) {
-          const key = String(sorter.columnKey) as TaskSortField;
-          setSortBy(key);
-          setSortOrder(sorter.order === 'descend' ? 'desc' : 'asc');
-        } else {
-          setSortBy(undefined);
-          setSortOrder(undefined);
-        }
-      }
-    },
-    [tablePageSize]
-  );
+  const { createTaskMut, updateTaskMut, deleteTaskMut } =
+    useTasksBoardMutations(queryClient);
 
   const value = useMemo<TasksBoardContextValue>(
     () => ({
@@ -258,10 +148,15 @@ export function TasksBoardProvider({ children }: { children: ReactNode }) {
       queryError,
       refetch,
       filterStatus,
+      setFilterStatus,
       filterPriority,
+      setFilterPriority,
       appliedSearch,
+      setAppliedSearch,
       dateRange,
+      setDateRange,
       overdueOnly,
+      setOverdueOnly,
       tablePage,
       tablePageSize,
       sortBy,

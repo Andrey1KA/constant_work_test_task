@@ -3,21 +3,26 @@
 import { useCallback } from 'react';
 import { Space } from 'antd';
 import type { CheckboxChangeEvent } from 'antd';
-import type { DayjsRangePickerChangeValue } from '@/types/dayjsRange';
-import { useTaskBoardModals } from '@/lib/taskBoard/useTaskBoardModals';
+import { useTaskBoardModals } from '@/lib/taskBoard';
 import {
   TasksBoardProvider,
   useTasksBoard,
 } from '@/state/tasksBoard';
-import { CategorySuggestModal } from '@/views/TaskBoardPage/CategorySuggestModal';
-import { DecomposeSubtasksModal } from '@/views/TaskBoardPage/DecomposeSubtasksModal';
-import { PrioritySuggestModal } from '@/views/TaskBoardPage/PrioritySuggestModal';
-import { TaskBoardFilters } from '@/views/TaskBoardPage/TaskBoardFilters';
-import { TaskBoardTableSection } from '@/views/TaskBoardPage/TaskBoardTableSection';
-import { TaskBoardToolbar } from '@/views/TaskBoardPage/TaskBoardToolbar';
-import { TaskFormModal } from '@/views/TaskBoardPage/TaskFormModal';
-import { WorkloadSummaryModal } from '@/views/TaskBoardPage/WorkloadSummaryModal';
-import type { Priority, TaskStatus } from '@/types/task';
+import type {
+  DayjsRangePickerChangeValue,
+  Priority,
+  TaskStatus,
+} from '@/types';
+import {
+  CategorySuggestModal,
+  DecomposeSubtasksModal,
+  PrioritySuggestModal,
+  TaskBoardFilters,
+  TaskBoardTableSection,
+  TaskBoardToolbar,
+  TaskFormModal,
+  WorkloadSummaryModal,
+} from '@/views/TaskBoardPage';
 
 function TaskBoardPageContent() {
   const {

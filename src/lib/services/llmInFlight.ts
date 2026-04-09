@@ -1,4 +1,4 @@
-import type { Maybe } from '@/types/utility';
+import type { Maybe } from '@/types';
 
 const inFlight = new Map<string, Promise<unknown>>();
 

@@ -5,52 +5,14 @@ import { useQuery } from '@tanstack/react-query';
 import { Button, Card, Descriptions, Spin, Tag, Typography } from 'antd';
 import dayjs from 'dayjs';
 import axios from 'axios';
-import { getTask } from '@/lib/api/tasksApi';
+import { getTask } from '@/lib/api';
+import { priorityColor, priorityLabel, statusLabel } from '@/lib/taskBoard';
 import { taskKeys } from '@/lib/query/taskKeys';
-import type { Priority, TaskStatus } from '@/types/task';
 
 const { Title, Text } = Typography;
 
 export interface TaskDetailPageProps {
   id: string;
-}
-
-const STATUS_LABEL: Record<TaskStatus, string> = {
-  PENDING: 'Ожидает',
-  IN_PROGRESS: 'В работе',
-  DONE: 'Готово',
-};
-
-enum TaskPriorityKey {
-  LOW = 'LOW',
-  MEDIUM = 'MEDIUM',
-  HIGH = 'HIGH',
-}
-
-function priorityLabel(p: Priority): string {
-  switch (p) {
-    case TaskPriorityKey.LOW:
-      return 'Низкий';
-    case TaskPriorityKey.MEDIUM:
-      return 'Средний';
-    case TaskPriorityKey.HIGH:
-      return 'Высокий';
-    default:
-      throw new Error(`Неизвестный приоритет: ${String(p)}`);
-  }
-}
-
-function priorityColor(p: Priority): string {
-  switch (p) {
-    case TaskPriorityKey.HIGH:
-      return 'red';
-    case TaskPriorityKey.MEDIUM:
-      return 'orange';
-    case TaskPriorityKey.LOW:
-      return 'blue';
-    default:
-      throw new Error(`Неизвестный приоритет: ${String(p)}`);
-  }
 }
 
 export function TaskDetailPage({ id }: TaskDetailPageProps) {
@@ -65,13 +27,13 @@ export function TaskDetailPage({ id }: TaskDetailPageProps) {
     },
   });
 
-  const errorMessage = (() => {
-    if (!isError || !error) return null;
-    if (axios.isAxiosError(error) && error.response?.status === 404) {
-      return 'Задача не найдена';
-    }
-    return 'Не удалось загрузить задачу';
-  })();
+  let errorMessage: string | null = null;
+  if (isError && error) {
+    errorMessage =
+      axios.isAxiosError(error) && error.response?.status === 404
+        ? 'Задача не найдена'
+        : 'Не удалось загрузить задачу';
+  }
 
   if (errorMessage) {
     return (
@@ -107,7 +69,7 @@ export function TaskDetailPage({ id }: TaskDetailPageProps) {
           {task.description || '—'}
         </Descriptions.Item>
         <Descriptions.Item label="Статус">
-          {STATUS_LABEL[task.status]}
+          {statusLabel(task.status)}
         </Descriptions.Item>
         <Descriptions.Item label="Приоритет">
           <Tag color={priorityColor(task.priority)}>

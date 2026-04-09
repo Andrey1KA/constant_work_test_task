@@ -1,3 +1,52 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "overrides": [
+    {
+      "files": ["src/**/*.{ts,tsx}"],
+      "excludedFiles": [
+        "src/types/**/*",
+        "src/lib/api/index.ts",
+        "src/views/**/index.ts",
+        "src/views/index.ts",
+        "src/components/**/index.ts",
+        "src/components/index.ts",
+        "src/lib/taskBoard/index.ts",
+        "src/state/tasksBoard/index.ts",
+        "src/state/tasksBoard/**/*"
+      ],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["@/types/*"],
+                "message": "Use the barrel import '@/types' instead of deep type paths."
+              },
+              {
+                "group": ["@/lib/api/*"],
+                "message": "Use the barrel import '@/lib/api' instead of deep API paths."
+              },
+              {
+                "group": ["@/views/*/*"],
+                "message": "Use barrel imports like '@/views' or '@/views/<feature>' instead of deep view paths."
+              },
+              {
+                "group": ["@/components/*/*"],
+                "message": "Use barrel imports like '@/components' or '@/components/<feature>' instead of deep component paths."
+              },
+              {
+                "group": ["@/lib/taskBoard/*"],
+                "message": "Use the barrel import '@/lib/taskBoard' instead of deep taskBoard paths."
+              },
+              {
+                "group": ["@/state/tasksBoard/*"],
+                "message": "Use the barrel import '@/state/tasksBoard' instead of deep tasksBoard paths."
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
 }

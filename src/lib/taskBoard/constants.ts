@@ -1,4 +1,4 @@
-import type { Priority, TaskStatus } from '@/types/task';
+import type { Priority, TaskStatus } from '@/types';
 
 export const STATUS_OPTIONS: { value: TaskStatus; label: string }[] = [
   { value: 'PENDING', label: 'Ожидает' },

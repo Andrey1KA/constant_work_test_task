@@ -1,4 +1,4 @@
-import type { TaskFilters } from '@/types/task';
+import type { TaskFilters } from '@/types';
 
 export const taskKeys = {
   all: ['tasks'] as const,

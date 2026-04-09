@@ -1,19 +1,17 @@
 import axios from 'axios';
 import type {
+  ApiErrorMessageBody,
+  CreateTaskDTO,
   LlmCategoryResponseBody,
   LlmDecomposeResponseBody,
   LlmPriorityResponseBody,
   LlmSuggestPriorityRequestBody,
   LlmTaskTitleBody,
-} from '@/types/llm';
-import type { ApiErrorMessageBody } from '@/types/axiosErrorBody';
-import type {
-  CreateTaskDTO,
   Task,
   TaskFilters,
   TaskListResponse,
   UpdateTaskDTO,
-} from '@/types/task';
+} from '@/types';
 
 const client = axios.create({
   baseURL: '/api/v1',

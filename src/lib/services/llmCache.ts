@@ -1,5 +1,5 @@
 import { createHash } from 'crypto';
-import type { Maybe, Nullable } from '@/types/utility';
+import type { Maybe, Nullable } from '@/types';
 
 type CacheEntry = { value: string; expiresAt: number };
 

@@ -5,7 +5,7 @@ import {
   taskService,
 } from '@/lib/services/taskService';
 import type { Task as PrismaTask } from '@prisma/client';
-import type { TaskListResponse } from '@/types/task';
+import type { TaskListResponse } from '@/types';
 import { ApiError } from '@/lib/ApiError';
 import { taskRepository } from '@/lib/repositories/taskRepository';
 

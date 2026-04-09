@@ -1,13 +1,13 @@
 'use client';
 
+import { useMemo } from 'react';
 import { Button, DatePicker, Form, Input, Modal, Select, Space } from 'antd';
+import dayjs from 'dayjs';
 import {
   PRIORITY_OPTIONS,
   STATUS_OPTIONS,
-} from '@/lib/taskBoard/constants';
-import type { TaskFormValues } from '@/types/taskForm';
-import type { Task } from '@/types/task';
-import type { Awaitable, Nullable } from '@/types/utility';
+} from '@/lib/taskBoard';
+import type { Awaitable, Nullable, Task, TaskFormValues } from '@/types';
 import type { FormInstance } from 'antd/es/form';
 
 const { TextArea } = Input;
@@ -29,6 +29,20 @@ export function TaskFormModal({
   onFinish,
   isSubmitting,
 }: TaskFormModalProps) {
+  const formInitialValues = useMemo((): Partial<TaskFormValues> => {
+    if (!editing) {
+      return { priority: 'MEDIUM', status: 'PENDING' };
+    }
+    return {
+      title: editing.title,
+      description: editing.description ?? undefined,
+      priority: editing.priority,
+      status: editing.status,
+      dueDate: editing.dueDate ? dayjs(editing.dueDate) : undefined,
+      category: editing.category ?? undefined,
+    };
+  }, [editing]);
+
   return (
     <Modal
       data-testid="e2e-modal-task"
@@ -50,14 +64,15 @@ export function TaskFormModal({
         </div>
       }
       width={640}
-      destroyOnClose
+      destroyOnHidden
     >
       <Form<TaskFormValues>
+        key={editing?.id ?? 'create'}
         id="task-form"
         form={form}
         layout="vertical"
         preserve={false}
-        initialValues={{ priority: 'MEDIUM', status: 'PENDING' }}
+        initialValues={formInitialValues}
         onFinish={onFinish}
       >
         <Form.Item

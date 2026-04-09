@@ -20,32 +20,44 @@ test.describe('Интеллектуальный менеджер задач', ()
     await dialog.getByTestId('e2e-modal-task-ok').click();
     await expect(dialog).toBeHidden({ timeout: 15_000 });
 
-    await expect(page.getByRole('row', { name: new RegExp(title) })).toBeVisible();
+    const rowCreated = page.getByRole('row', { name: new RegExp(title) });
+    await expect(rowCreated).toBeVisible({ timeout: 10_000 });
 
-    const row = page.getByRole('row', { name: new RegExp(title) });
-    const idAttr = await row.getAttribute('data-testid');
+    const idAttr = await rowCreated.getAttribute('data-testid');
     expect(idAttr).toMatch(/^e2e-task-row-/);
-    const id = idAttr!.replace('e2e-task-row-', '');
+    const taskId = idAttr!.replace('e2e-task-row-', '');
 
-    await page.getByTestId(`e2e-task-edit-${id}`).click();
+    await page.getByTestId(`e2e-task-edit-${taskId}`).click();
     const editDialog = page.getByRole('dialog', { name: 'Редактирование задачи' });
     await expect(editDialog).toBeVisible();
     await editDialog.getByTestId('e2e-input-task-title').fill(titleEdited);
-    await editDialog.getByTestId('e2e-modal-task-ok').click();
+
+    await Promise.all([
+      page.waitForResponse(
+        (r) =>
+          r.request().method() === 'PUT' &&
+          r.url().includes(`/api/v1/tasks/${taskId}`) &&
+          r.status() === 200,
+        { timeout: 15_000 }
+      ),
+      editDialog.getByTestId('e2e-modal-task-ok').click(),
+    ]);
+
     await expect(editDialog).toBeHidden({ timeout: 15_000 });
 
-    await expect(page.getByRole('row', { name: new RegExp(titleEdited) })).toBeVisible();
+    await expect(page.getByTestId(`e2e-task-row-${taskId}`)).toContainText(titleEdited, {
+      timeout: 15_000,
+    });
 
-    await page.getByTestId(`e2e-task-delete-${id}`).click();
+    await page.getByTestId(`e2e-task-delete-${taskId}`).click();
     await page
       .locator('.ant-popconfirm')
       .filter({ visible: true })
       .getByRole('button', { name: 'Да' })
       .click();
-    await expect(page.getByRole('row', { name: new RegExp(titleEdited) })).toHaveCount(
-      0,
-      { timeout: 15_000 }
-    );
+    await expect(page.getByRole('row', { name: new RegExp(titleEdited) })).toHaveCount(0, {
+      timeout: 15_000,
+    });
   });
 
   test('US-2: фильтр по статусу и поиск комбинируются в запросе API', async ({

@@ -7,8 +7,8 @@ import type {
   LlmPrismaTaskRow,
   LlmSuggestPriorityRequestBody,
   LlmTaskTitleBody,
-} from '@/types/llm';
-import type { Nullable } from '@/types/utility';
+  Nullable,
+} from '@/types';
 import {
   llmCacheGet,
   llmCacheKey,

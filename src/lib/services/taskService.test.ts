@@ -5,6 +5,7 @@ import {
   taskService,
 } from '@/lib/services/taskService';
 import type { Task as PrismaTask } from '@prisma/client';
+import type { TaskListResponse } from '@/types/task';
 import { ApiError } from '@/lib/ApiError';
 import { taskRepository } from '@/lib/repositories/taskRepository';
 
@@ -87,7 +88,7 @@ describe('taskService', () => {
       total: 1,
     });
 
-    const result = await taskService.list({
+    const result: TaskListResponse = await taskService.list({
       status: 'PENDING',
       q: 'A',
     });

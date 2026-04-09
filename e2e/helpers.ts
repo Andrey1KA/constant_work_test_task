@@ -1,5 +1,5 @@
 import type { APIRequestContext, Page } from '@playwright/test';
-import type { CreateTaskDTO } from '@/types/task';
+import type { CreateTaskDTO, TaskListResponse } from '@/types/task';
 
 export function isTasksListApiUrl(u: string): boolean {
   return u.includes('/api/v1/tasks') && !/\/api\/v1\/tasks\/[^/?]+/.test(u);
@@ -24,10 +24,7 @@ export async function apiClearTasks(request: APIRequestContext) {
       `/api/v1/tasks?page=${page}&pageSize=${pageSize}`
     );
     if (!res.ok()) return;
-    const json = (await res.json()) as {
-      data?: { id: string }[];
-      total?: number;
-    };
+    const json = (await res.json()) as TaskListResponse;
     const batch = json.data ?? [];
     for (const t of batch) {
       await request.delete(`/api/v1/tasks/${t.id}`);
